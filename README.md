@@ -38,9 +38,9 @@ Frontend developer test job
 
 ### Обычная
 
-- Скачать файл архива приложения из репозитария [GitHub](https://github.com/minimus/fd-test-job/archive/master.zip)
-- Распаковать из архива папку `fd-test-job`
-- Перейти в папку `fd-test-job` и выполнить команды:
+- Скачать файл архива приложения из репозитария [GitHub](https://github.com/minimus/fd-test-job-hooks/archive/master.zip)
+- Распаковать из архива папку `fd-test-job-hooks`
+- Перейти в папку `fd-test-job-hooks` и выполнить команды:
 
 ```
 $ npm install
@@ -55,7 +55,7 @@ $ npm start
 Если Docker установлен на компьютере, выполните команду:
 
 ```
-docker run -p 3030:3000 -d minimus/fd-test-job
+docker run -p 3030:3000 -d minimus/fd-test-job-hooks
 ```
 
 Приложение будет доступно в браузере по адресу `localhost:3030`
