@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { withRouter } from 'react-router'
 import BackgroundMap from '../../components/maps/BackgroundMap'
@@ -9,6 +9,7 @@ import {
 import { getUserPosition } from '../../redux/modules/helpers'
 
 const MapContainer = () => {
+  const mapRef = useRef()
   const mapProps = useSelector(state => state.maps, shallowEqual)
   const dispatch = useDispatch()
   const viewportChanged = useCallback(
@@ -19,8 +20,8 @@ const MapContainer = () => {
     [dispatch],
   )
 
-  const changeUserPosition = (isSet) => {
-    if (!isSet && process.env.BROWSER) {
+  const changeUserPosition = () => {
+    if (process.env.BROWSER) {
       dispatch({
         type: MAP_USER_POSITION_CHANGE_STARTED,
         payload: true,
@@ -56,9 +57,8 @@ const MapContainer = () => {
   const { position, currentPosition, zoom } = mapProps
 
   useEffect(() => {
-    changeUserPosition(currentPosition.isSet)
-    return () => false
-  })
+    changeUserPosition()
+  }, [mapRef])
 
   return (
     <BackgroundMap
