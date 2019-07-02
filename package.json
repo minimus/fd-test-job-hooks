@@ -5,8 +5,8 @@
   "main": "app.js",
   "author": "Konstantin Leonov",
   "engines": {
-    "node": "12.4.0",
-    "npm": "6.9.0"
+    "node": "12.5.0",
+    "npm": "6.9.2"
   },
   "scripts": {
     "start": "node ./server.js",
