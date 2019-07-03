@@ -20,45 +20,45 @@ const MapContainer = () => {
     [dispatch],
   )
 
-  const changeUserPosition = () => {
-    if (process.env.BROWSER) {
-      dispatch({
-        type: MAP_USER_POSITION_CHANGE_STARTED,
-        payload: true,
-      })
-
-      setTimeout(() => {
-        getUserPosition({
-          enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: 0,
-        })
-          .then((data) => {
-            const { latitude, longitude } = data.coords
-            dispatch({
-              type: MAP_USER_POSITION_CHANGE_FINISHED,
-              payload: {
-                isSet: true,
-                latitude,
-                longitude,
-              },
-            })
-          })
-          .catch((err) => {
-            dispatch({
-              type: MAP_USER_POSITION_CHANGE_ERROR,
-              payload: err,
-            })
-          })
-      }, 1500)
-    }
-  }
 
   const { position, currentPosition, zoom } = mapProps
 
   useEffect(() => {
+    const changeUserPosition = () => {
+      if (process.env.BROWSER) {
+        dispatch({
+          type: MAP_USER_POSITION_CHANGE_STARTED,
+          payload: true,
+        })
+
+        setTimeout(() => {
+          getUserPosition({
+            enableHighAccuracy: false,
+            timeout: 5000,
+            maximumAge: 0,
+          })
+            .then((data) => {
+              const { latitude, longitude } = data.coords
+              dispatch({
+                type: MAP_USER_POSITION_CHANGE_FINISHED,
+                payload: {
+                  isSet: true,
+                  latitude,
+                  longitude,
+                },
+              })
+            })
+            .catch((err) => {
+              dispatch({
+                type: MAP_USER_POSITION_CHANGE_ERROR,
+                payload: err,
+              })
+            })
+        }, 1500)
+      }
+    }
     changeUserPosition()
-  }, [mapRef])
+  }, [mapRef, dispatch])
 
   return (
     <BackgroundMap
