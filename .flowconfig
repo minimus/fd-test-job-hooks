@@ -1,0 +1,13 @@
+[ignore]
+.*/build
+.*/docs
+.*/public
+<PROJECT_ROOT>/src/createFetch.js
+
+[options]
+module.file_ext=.js
+module.file_ext=.jsx
+module.file_ext=.css
+module.file_ext=.scss
+module.name_mapper='.*\(.css\)' -> 'empty/object'
+module.name_mapper='.*\(.scss\)' -> 'empty/object'

@@ -14,11 +14,11 @@ process.env.BROWSER = true
 const locale = getUserLocale()
 
 const localesInit = {
-  ...translation,
-  options: {
-    defaultLanguage: locale,
-    renderToStaticMarkup: ReactDOMServer.renderToStaticMarkup,
-  },
+	...translation,
+	options: {
+		defaultLanguage: locale,
+		renderToStaticMarkup: ReactDOMServer.renderToStaticMarkup,
+	},
 }
 
 // eslint-disable-next-line no-underscore-dangle
@@ -27,12 +27,12 @@ const state = window.__PRELOADED_STATE__
 const store = configStore(state)
 
 hydrate(
-  <Provider store={store}>
-    <LocalizeProvider initialize={localesInit}>
-      <Router>
-        <Application />
-      </Router>
-    </LocalizeProvider>
-  </Provider>,
-  document.querySelector('#app'),
+	<Provider store={store}>
+		<LocalizeProvider initialize={localesInit}>
+			<Router>
+				<Application />
+			</Router>
+		</LocalizeProvider>
+	</Provider>,
+	document.querySelector('#app'),
 )

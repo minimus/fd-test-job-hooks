@@ -28,11 +28,13 @@ app.use(cookieParser())
 app.use(compression())
 
 // Serve static files
-app.use(express.static(path.join('./'/* __dirname */, 'public')))
+app.use(express.static(path.join('./' /* __dirname */, 'public')))
 
 function renderFullPage(html, preloadedState) {
-  const { home: { locale } } = preloadedState
-  return `
+	const {
+		home: { locale },
+	} = preloadedState
+	return `
     <!doctype html>
     <html lang="${locale}">
       <head>
@@ -44,10 +46,7 @@ function renderFullPage(html, preloadedState) {
       <body>
         <div id="app">${html}</div>
         <script>
-          window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(
-    /</g,
-    '\\u003c',
-  )}
+          window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
         </script>
         <script src="/js/bundle.js"></script>
       </body>
@@ -58,59 +57,64 @@ function renderFullPage(html, preloadedState) {
 process.env.BROWSER = false
 
 function handleRender(req, res) {
-  // Preferred language
-  const acceptedLanguages = req.get('Accept-Language')
-  const locale = (acceptedLanguages) ? getUserLocale(acceptedLanguages.split(',')[0]) : 'en'
-  const position = getDefaultPosition(locale)
+	// Preferred language
+	const acceptedLanguages = req.get('Accept-Language')
+	const locale = acceptedLanguages ? getUserLocale(acceptedLanguages.split(',')[0]) : 'en'
+	const position = getDefaultPosition(locale)
 
-  const { latitude, longitude } = req.params
-  const storedPosition = {
-    latitude: parseFloat(latitude),
-    longitude: parseFloat(longitude),
-    stored: (!!latitude && !!longitude),
-  }
+	const { latitude, longitude } = req.params
+	const storedPosition = {
+		latitude: parseFloat(latitude),
+		longitude: parseFloat(longitude),
+		stored: !!latitude && !!longitude,
+	}
 
-  const { cookies } = req
-  const { username = '' } = cookies
-  const rememberMe = (!!username)
+	const { cookies } = req
+	const { username = '' } = cookies
+	const rememberMe = !!username
 
-  const localesInit = {
-    ...translation,
-    options: {
-      defaultLanguage: locale,
-      renderToStaticMarkup: ReactDOMServer.renderToStaticMarkup,
-    },
-  }
+	const localesInit = {
+		...translation,
+		options: {
+			defaultLanguage: locale,
+			renderToStaticMarkup: ReactDOMServer.renderToStaticMarkup,
+		},
+	}
 
-  const store = createStore(reducer)
-  const context = {}
+	const store = createStore(reducer)
+	const context = {}
 
-  // Render the component to a string
-  const html = ReactDOMServer.renderToString(
-    <Provider store={store}>
-      <LocalizeProvider initialize={localesInit} store={store}>
-        <StaticRouter location={req.url} context={context}>
-          <Application />
-        </StaticRouter>
-      </LocalizeProvider>
-    </Provider>,
-  )
+	// Render the component to a string
+	const html = ReactDOMServer.renderToString(
+		<Provider store={store}>
+			<LocalizeProvider initialize={localesInit} store={store}>
+				<StaticRouter location={req.url} context={context}>
+					<Application />
+				</StaticRouter>
+			</LocalizeProvider>
+		</Provider>,
+	)
 
-  // Grab the initial state from our Redux store
-  const state = store.getState()
-  const { home, maps } = state
-  const preloadedState = {
-    ...state,
-    home: {
-      ...home, locale, username, rememberMe,
-    },
-    maps: {
-      ...maps, position, storedPosition,
-    },
-  }
+	// Grab the initial state from our Redux store
+	const state = store.getState()
+	const { home, maps } = state
+	const preloadedState = {
+		...state,
+		home: {
+			...home,
+			locale,
+			username,
+			rememberMe,
+		},
+		maps: {
+			...maps,
+			position,
+			storedPosition,
+		},
+	}
 
-  // Send the rendered page back to the client
-  res.send(renderFullPage(html, preloadedState))
+	// Send the rendered page back to the client
+	res.send(renderFullPage(html, preloadedState))
 }
 
 app.use('/:latitude/:longitude', handleRender)

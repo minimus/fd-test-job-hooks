@@ -1,3 +1,5 @@
+/* @flow */
+
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { withRouter } from 'react-router'
@@ -8,7 +10,7 @@ import {
 } from '../../redux/actions'
 import { getUserPosition } from '../../redux/modules/helpers'
 
-const MapContainer = () => {
+const MapContainer = (): Node => {
   const mapRef = useRef()
   const mapProps = useSelector(state => state.maps, shallowEqual)
   const dispatch = useDispatch()

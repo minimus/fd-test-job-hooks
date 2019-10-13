@@ -1,3 +1,7 @@
+/* @flow */
+
+import type { TPosition } from '../../../types'
+
 export function getUserPosition(options) {
   if (process.env.BROWSER) {
     return new Promise((resolve, reject) => (
@@ -7,18 +11,18 @@ export function getUserPosition(options) {
   return { coords: { latitude: null, longitude: null } }
 }
 
-export function setCookie(username, remember = true) {
+export function setCookie(username: string, remember: boolean = true): void {
   const days = (!!username && remember) ? 7 : -1
   const date = new Date()
   date.setDate(date.getDate() + days)
   document.cookie = `username=${username}; expires=${date.toUTCString()}`
 }
 
-export function getCookie() {
+export function getCookie(): string {
   return document.cookie.replace(/(?:(?:^|.*;\s*)test2\s*=\s*([^;]*).*$)|^.*$/, '$1')
 }
 
-export function getUserLocale(preferredLanguage) {
+export function getUserLocale(preferredLanguage: string): string {
   if (preferredLanguage) {
     const pl = preferredLanguage.split(',')[0]
     if (/^(ru|en|de)/gi.test(pl)) {
@@ -33,7 +37,7 @@ export function getUserLocale(preferredLanguage) {
   return 'en'
 }
 
-export function getDefaultPosition(locale = 'en') {
+export function getDefaultPosition(locale: string = 'en'): TPosition {
   const defaultPositions = {
     en: {
       latitude: 40.730610,
